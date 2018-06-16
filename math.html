@@ -1,0 +1,141 @@
+<!-- Basic HTML document. Remove comments for your own document. -->
+
+<!-- This says the document is an HTML5 document. -->
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <style>
+ol {
+  counter-reset: list;
+}
+ol > li {
+  list-style: none;
+}
+ol > li:before {
+  content: counter(list) ") ";
+  counter-increment: list;
+}
+#col2 {
+  counter-reset: list 20;
+}
+table {
+  width: 100%;
+}
+tr {
+    line-height: 40px;
+}
+td {
+  width: 50%;
+}
+h1 {
+    margin-top: 40px;
+}
+  </style>
+</head>
+
+<body>
+  <h1>Math Problems</h1>
+
+  <table>
+    <tr>
+      <td>
+        <ol id="col1"></ol>
+      </td>
+      <td>
+        <ol id="col2"></ol>
+      </td>
+    </tr>
+  </table>
+
+  <h1>Math Answers</h1>
+  <table>
+    <tr>
+      <td>
+        <ol id="col1ans"></ol>
+      </td>
+      <td>
+        <ol id="col2ans"></ol>
+      </td>
+    </tr>
+  </table>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script>
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
+function makeAdditionProblem(element, min, max) {
+    var a = getRndInteger(min, max);
+    var b = getRndInteger(min, max);
+    var problem = a + " + " + b + " = ";
+    var answer = problem + (a + b);
+    problem = "<li>$" + problem + "$</li>";
+    answer = "<li>$" + answer + "$</li>";
+    return {problem: problem, answer: answer};
+}
+
+function makeSubtractionProblem(element, min, max) {
+    var a = getRndInteger(min, max);
+    var b = getRndInteger(min, max);
+    var problem = a + " - " + b + " = ";
+    var answer = problem + (a - b);
+    problem = "<li>$" + problem + "$</li>";
+    answer = "<li>$" + answer + "$</li>";
+    return {problem: problem, answer: answer};
+}
+
+function makeMultiplicationProblem(element, min, max) {
+    var a = getRndInteger(min, max);
+    var b = getRndInteger(min, max);
+    var problem = a + " \\cdot " + b + " = ";
+    var answer = problem + (a * b);
+    problem = "<li>$" + problem + "$</li>";
+    answer = "<li>$" + answer + "$</li>";
+    return {problem: problem, answer: answer};
+}
+
+function generateProblems(column, columnans) {
+  for(var i = 0; i < 20; i++) {
+      var problemType = getRndInteger(0, 3);
+      var result;
+      if(problemType === 0)
+          result = makeAdditionProblem(column, -10, 11);
+      else if (problemType === 1)
+          result = makeSubtractionProblem(column, -10, 11);
+      else if (problemType === 2)
+          result = makeMultiplicationProblem(column, -10, 11);
+      column.append(result.problem);
+      columnans.append(result.answer);
+  }
+}
+
+var column = $("#col1");
+var columnans = $("#col1ans");
+generateProblems(column, columnans);
+
+var column = $("#col2");
+var columnans = $("#col2ans");
+generateProblems(column, columnans);
+
+
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+</body>
+</html>
